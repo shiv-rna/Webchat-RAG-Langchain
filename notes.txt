@@ -1,0 +1,98 @@
+# Creating Requirements text file
+- Use pip freeze => List of all dependencies installed
+- Use grep => to search for the one, wish to save in the req.txt file
+- Ex. : pip freeze | grep streamlit
+
+# Using pipreqs command to generate Requirements.txt
+- It is bit finicky as it will update the non-breaking dependencies automatically
+- This command has tendency to 
+
+# Conda is used for Virtual Enviroment python
+- Venv is more lightweight vs Conda
+- Conda is package manager, allows more flexibility
+- conda activate chat-with-website
+___________________________________________________
+
+# How Streamlit works ?
+- Any Event or interaction happens on the Streamlit => Streamlit runs the full code again
+- Chat_history in the above code => Needs to be in persistent state, shouldnt reintialize when streamlit runs everything again
+- You can achieve this in streamlit, using streamlit.session_state
+
+# Note 1:
+- In this code, we are not using just the user query to do the semantic search on the chunk embeddings of the documnet
+- but instead we are using both user query + the entire conversation history and then do a semantic search on the chunk embeddings of the document
+
+# Note 2:
+- llm could be part of either Langchain community or openai
+
+# Note 3:
+- In Langchain, every vector store have a method called 'as_retriever' --> same goes for Chroma vector store too !
+- Allows to use the vector store to be used it to retrieve relevant text based on the query
+
+# Note 4:
+- In Langchain -->  chain invoke requires variables to be passed on for the internal prompt as key-value pairs
+
+# In Production Grade App:
+- We wont expose the chains to the frontend, and put them all in the backend
+
+# Note 5:
+- This application, adds wayy to much convo context, if you kept asking new questions, which might be an issue
+
+# Note 6:
+- One Issue, I found was running into was:
+- this model's maximum context length is 4097 tokens. However, your messages resulted in 4561 tokens. Please reduce the length of the messages
+___________________________________________________
+# Comments from the Code:
+# Line: 60
+Messages Placeholder replaces itself with the variable it is passed with (If the var exists, else remains empty)
+here in our case, it is chat_history
+Langchain allows to send in messages as tuple
+prompt works exactly as a f string in the python, so the f string gets populated with the value it has been fed with
+This prompt will be used to ask llm to generate a search query for contextual data chunk
+
+# Line: 139
+Flag to check if var already exists in session state
+Yes -> no need to intialize
+
+# Line:
+___________________________________________________
+
+# Importing Rules for Py File:
+- Group imports by category:
+Group imports into sections based on their source (standard library, third-party libraries, local imports).
+Use blank lines to separate these sections for clarity.
+
+-Use absolute imports:
+Prefer absolute imports over relative imports to ensure clarity and prevent potential issues with module resolution.
+
+-Import one module per line:
+Import each module on its own line to improve readability and maintainability.
+
+-Sort imports alphabetically:
+Sort imports alphabetically within each section to make them easier to find.
+
+# In this version:
+
+- Each function has a docstring that explains its purpose, parameters, and return value.
+- Comments are used sparingly and only for clarifying complex or non-obvious code sections.
+- Variable and function names are descriptive, following PEP8 naming conventions.
+- The code structure is clear, with consistent indentation and spacing.
+
+
+
+___________________________________________________
+# Linting Error on Outer Scope
+- The "redefining name from outer scope" linting error typically occurs when a variable or function with the same name is declared in an inner scope, 
+which shadows a variable or function with the same name in the outer scope. This can lead to confusion and unintended behavior, especially in languages 
+where scoping rules are strict, like Python.
+
+# Linting Error:
+- The Pylint error "expected 2 blank lines, found 1" indicates that Pylint expects to see two blank lines between function definitions or classes.
+
+# Linting Error:
+- The Pylint error "Missing function or method docstring" indicates that a function or method is missing a docstring. Docstrings are important for 
+documenting the purpose, arguments, and return values of functions or methods, which helps improve code readability and maintainability.
+
+# Linting Error for naming Constants:
+The linting error "Constant name 'message_type' doesn't conform to UPPER_CASE naming style" suggests that the variable message_type is being treated as a constant, 
+but its naming convention doesn't match the convention typically used for constants, which is usually UPPER_CASE_WITH_UNDERSCORES.
